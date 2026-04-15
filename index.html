@@ -8,171 +8,149 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { background-color: #ffffff; color: #0f172a; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .glass-card { background: #ffffff; border: 1px solid #f1f5f9; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
-        .gradient-ganho { background: linear-gradient(135deg, #10b981, #059669); }
-        .gradient-gasto { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .tab-relatorio { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card { background: #ffffff; border: 1px solid #f1f5f9; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
+        .btn-mini { transition: all 0.2s ease; border: 1px solid #f1f5f9; }
+        .btn-mini:active { scale: 0.95; background-color: #f8fafc; }
     </style>
 </head>
 <body class="p-6 pb-20">
 
     <div class="flex justify-between items-start mb-8 pt-4">
         <div>
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Saldo Disponível</p>
-            <h1 id="saldo-total" class="text-4xl font-extrabold tracking-tight text-slate-900">R$ 0,00</h1>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Saldo em Conta</p>
+            <h1 id="saldo-total" class="text-3xl font-extrabold tracking-tight text-slate-900">R$ 0,00</h1>
         </div>
-        <button onclick="toggleRelatorio()" class="bg-slate-50 text-slate-500 text-[10px] font-bold px-4 py-2.5 rounded-full border border-slate-100 active:scale-95 transition">
+        <button onclick="toggleRelatorio()" class="bg-white text-slate-500 text-[9px] font-bold px-4 py-2 rounded-full border border-slate-100 shadow-sm active:bg-slate-50">
             RELATÓRIOS
         </button>
     </div>
 
-    <div id="aba-detalhes" class="hidden tab-relatorio mb-10 overflow-hidden">
-        <div class="glass-card rounded-[2rem] p-6 bg-slate-50/50 border-blue-100">
-            <h3 class="text-sm font-bold text-slate-800 mb-5 flex items-center gap-2">
-                <span class="w-1.5 h-4 bg-blue-500 rounded-full"></span> Resumo Mensal
-            </h3>
-            <div class="space-y-6">
-                <div>
-                    <p class="text-[10px] font-black text-blue-600 uppercase mb-3 tracking-widest">Este Mês</p>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white p-3 rounded-2xl border border-slate-100">
-                            <p class="text-[9px] text-slate-400 font-bold uppercase">Entrou</p>
-                            <p class="text-green-600 font-extrabold">+ R$ <span id="ganho-mes">0,00</span></p>
-                        </div>
-                        <div class="bg-white p-3 rounded-2xl border border-slate-100">
-                            <p class="text-[9px] text-slate-400 font-bold uppercase">Saiu</p>
-                            <p class="text-red-500 font-extrabold">- R$ <span id="gasto-mes">0,00</span></p>
-                        </div>
-                    </div>
+    <div id="aba-detalhes" class="hidden mb-10 animate-in fade-in slide-in-from-top-2 duration-300">
+        <div class="glass-card rounded-3xl p-5 bg-slate-50/50">
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-white p-3 rounded-2xl">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Ganhos</p>
+                    <p class="text-green-600 font-bold text-sm">+ <span id="ganho-mes">0,00</span></p>
                 </div>
-                <div class="pt-4 border-t border-slate-200/60 flex justify-between items-center">
-                    <span class="text-xs font-bold text-slate-500 uppercase">Resultado Líquido</span>
-                    <span id="resultado-mes" class="font-black text-slate-900 text-lg">R$ 0,00</span>
+                <div class="bg-white p-3 rounded-2xl">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase">Gastos</p>
+                    <p class="text-red-500 font-bold text-sm">- <span id="gasto-mes">0,00</span></p>
                 </div>
+            </div>
+            <div class="flex justify-between items-center px-2">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Resultado do Mês</span>
+                <span id="resultado-mes" class="font-black text-slate-900">R$ 0,00</span>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-12">
-        <button onclick="abrirModal('entrada')" class="gradient-ganho h-20 rounded-[1.5rem] flex flex-col items-center justify-center text-white shadow-lg active:scale-95 transition shadow-green-200">
-            <span class="text-2xl font-light">⊕</span>
-            <span class="text-[10px] font-black tracking-widest uppercase">Ganho</span>
+    <div class="flex gap-3 mb-12">
+        <button onclick="abrirModal('entrada')" class="flex-1 btn-mini h-12 rounded-2xl bg-white flex items-center justify-center gap-2 text-slate-700 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+            <span class="text-[11px] font-bold uppercase tracking-wider">Entrada</span>
         </button>
-        <button onclick="abrirModal('saida')" class="gradient-gasto h-20 rounded-[1.5rem] flex flex-col items-center justify-center text-white shadow-lg active:scale-95 transition shadow-red-200">
-            <span class="text-2xl font-light">⊖</span>
-            <span class="text-[10px] font-black tracking-widest uppercase">Gasto</span>
+        <button onclick="abrirModal('saida')" class="flex-1 btn-mini h-12 rounded-2xl bg-white flex items-center justify-center gap-2 text-slate-700 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+            <span class="text-[11px] font-bold uppercase tracking-wider">Saída</span>
         </button>
     </div>
 
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-sm font-black text-slate-900 uppercase tracking-widest">Atividade Recente</h2>
-        <span class="w-10 h-[1px] bg-slate-200"></span>
-    </div>
-    
-    <div id="historico" class="space-y-4"></div>
+    <h2 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-6">Movimentações</h2>
+    <div id="historico" class="space-y-3"></div>
 
-    <div id="modal" class="hidden fixed inset-0 bg-white/80 backdrop-blur-xl z-50 flex items-end sm:items-center justify-center">
-        <div class="bg-white w-full max-w-sm p-8 rounded-t-[3rem] sm:rounded-[3rem] shadow-2xl border border-slate-100">
-            <div class="w-12 h-1.5 bg-slate-100 rounded-full mx-auto mb-8 sm:hidden"></div>
-            <h3 id="modal-titulo" class="text-2xl font-black mb-8 text-slate-900"></h3>
-            <div class="space-y-6">
-                <div class="relative">
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 text-slate-300 font-bold text-xl">R$</span>
-                    <input type="number" id="valor" placeholder="0,00" class="w-full bg-transparent border-b-2 border-slate-100 p-4 pl-8 text-4xl font-black outline-none focus:border-slate-900 transition">
-                </div>
-                <input type="text" id="descricao" placeholder="O que foi isso?" class="w-full bg-slate-50 p-5 rounded-2xl text-lg font-medium outline-none border border-transparent focus:border-slate-200">
+    <div id="modal" class="hidden fixed inset-0 bg-white/90 backdrop-blur-md z-50 flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-xs p-8 rounded-[2.5rem] shadow-2xl border border-slate-50">
+            <h3 id="modal-titulo" class="text-lg font-black mb-8 text-center text-slate-800 tracking-tight"></h3>
+            <input type="hidden" id="edit-id">
+            <div class="space-y-5">
+                <input type="number" id="valor" placeholder="R$ 0,00" class="w-full text-center bg-transparent text-3xl font-black outline-none border-b-2 border-slate-100 focus:border-slate-900 pb-2 transition">
+                <input type="text" id="descricao" placeholder="Descrição" class="w-full bg-slate-50 p-4 rounded-xl text-sm font-medium outline-none">
             </div>
             <div class="flex gap-4 mt-10">
-                <button onclick="fecharModal()" class="flex-1 text-slate-400 font-bold py-5">CANCELAR</button>
-                <button onclick="salvar()" class="flex-1 bg-slate-900 text-white rounded-2xl font-black py-5 shadow-xl active:scale-95 transition">SALVAR</button>
+                <button onclick="fecharModal()" class="flex-1 text-slate-400 font-bold text-xs">VOLTAR</button>
+                <button onclick="salvar()" class="flex-1 bg-slate-900 text-white rounded-xl font-bold text-xs py-4 shadow-lg active:scale-95">CONFIRMAR</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Sistema de ID corrigido para evitar erros (Data atual + aleatório)
-        let transacoes = JSON.parse(localStorage.getItem('fin_v5_pro')) || [];
+        // Substituição do uuidv4 para evitar erros no GitHub
+        let transacoes = JSON.parse(localStorage.getItem('fin_v6_bruno')) || [];
         let tipoAt = 'entrada';
 
         function atualizarUI() {
-            localStorage.setItem('fin_v5_pro', JSON.stringify(transacoes));
-            
+            localStorage.setItem('fin_v6_bruno', JSON.stringify(transacoes));
             const agora = new Date();
-            const mAtual = agora.getMonth();
-            const aAtual = agora.getFullYear();
-
             const saldo = transacoes.reduce((acc, t) => t.tipo === 'entrada' ? acc + t.valor : acc - t.valor, 0);
             document.getElementById('saldo-total').innerText = `R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
 
-            // Lógica de Detalhamento
-            const dadosMes = transacoes.filter(t => {
-                const d = new Date(t.ts);
-                return d.getMonth() === mAtual && d.getFullYear() === aAtual;
-            });
-
-            const gMes = dadosMes.filter(t => t.tipo === 'entrada').reduce((a, b) => a + b.valor, 0);
-            const sMes = dadosMes.filter(t => t.tipo === 'saida').reduce((a, b) => a + b.valor, 0);
-            const rMes = gMes - sMes;
-
+            // Lógica de Resumo
+            const dMes = transacoes.filter(t => new Date(t.ts).getMonth() === agora.getMonth());
+            const gMes = dMes.filter(t => t.tipo === 'entrada').reduce((a, b) => a + b.valor, 0);
+            const sMes = dMes.filter(t => t.tipo === 'saida').reduce((a, b) => a + b.valor, 0);
+            
             document.getElementById('ganho-mes').innerText = gMes.toLocaleString('pt-BR', {minimumFractionDigits: 2});
             document.getElementById('gasto-mes').innerText = sMes.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-            document.getElementById('resultado-mes').innerText = `R$ ${rMes.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('resultado-mes').style.color = rMes >= 0 ? '#10b981' : '#ef4444';
+            document.getElementById('resultado-mes').innerText = `R$ ${(gMes - sMes).toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
 
-            // Lista de Histórico
+            // Histórico com Editar e Excluir
             document.getElementById('historico').innerHTML = transacoes.map(t => `
-                <div class="glass-card p-5 rounded-3xl flex justify-between items-center active:bg-slate-50 transition">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl ${t.tipo === 'entrada' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}">
-                            ${t.tipo === 'entrada' ? '↗' : '↘'}
-                        </div>
+                <div class="glass-card p-4 rounded-2xl flex justify-between items-center bg-white">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full ${t.tipo === 'entrada' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]'}"></div>
                         <div>
-                            <p class="font-bold text-slate-800 text-sm">${t.descricao}</p>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">${new Date(t.ts).toLocaleDateString('pt-BR')}</p>
+                            <p class="font-bold text-[13px] text-slate-700">${t.descricao}</p>
+                            <p class="text-[9px] text-slate-400 uppercase font-medium tracking-tighter">${new Date(t.ts).toLocaleDateString('pt-BR')}</p>
                         </div>
                     </div>
-                    <span class="font-black text-sm ${t.tipo === 'entrada' ? 'text-green-600' : 'text-slate-900'}">
-                        ${t.tipo === 'entrada' ? '+' : '-'} R$ ${t.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
-                    </span>
+                    <div class="flex items-center gap-4">
+                        <span class="font-bold text-[13px] ${t.tipo === 'entrada' ? 'text-green-600' : 'text-slate-900'}">
+                            R$ ${t.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+                        </span>
+                        <div class="flex gap-2">
+                            <button onclick="editar('${t.id}')" class="text-[10px] opacity-20 hover:opacity-100 transition">✏️</button>
+                            <button onclick="excluir('${t.id}')" class="text-[10px] opacity-20 hover:opacity-100 transition">🗑️</button>
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function toggleRelatorio() {
-            const aba = document.getElementById('aba-detalhes');
-            aba.classList.toggle('hidden');
-        }
-
-        function abrirModal(t) {
+        function abrirModal(t, id = null) {
             tipoAt = t;
             document.getElementById('modal-titulo').innerText = t === 'entrada' ? 'Novo Ganho' : 'Novo Gasto';
             document.getElementById('modal').classList.remove('hidden');
-            document.getElementById('valor').focus();
+            document.getElementById('edit-id').value = id || '';
+            if(!id) { document.getElementById('valor').value = ''; document.getElementById('descricao').value = ''; }
         }
 
-        function fecharModal() {
-            document.getElementById('modal').classList.add('hidden');
-            document.getElementById('valor').value = '';
-            document.getElementById('descricao').value = '';
-        }
+        function fecharModal() { document.getElementById('modal').classList.add('hidden'); }
 
         function salvar() {
             const v = parseFloat(document.getElementById('valor').value);
-            const d = document.getElementById('descricao').value || 'Diversos';
+            const d = document.getElementById('descricao').value || 'Geral';
+            const id = document.getElementById('edit-id').value;
             if(!v) return;
 
-            // Uso de Date.now() para ID, removendo erro de uuidv4
-            transacoes.unshift({
-                id: Date.now() + Math.random(),
-                tipo: tipoAt,
-                valor: v,
-                descricao: d,
-                ts: Date.now()
-            });
-
-            fecharModal();
-            atualizarUI();
+            if(id) {
+                const i = transacoes.findIndex(t => t.id == id);
+                transacoes[i] = { ...transacoes[i], valor: v, descricao: d };
+            } else {
+                transacoes.unshift({ id: Date.now(), tipo: tipoAt, valor: v, descricao: d, ts: Date.now() });
+            }
+            fecharModal(); atualizarUI();
         }
+
+        function excluir(id) { if(confirm("Apagar este registro?")) { transacoes = transacoes.filter(t => t.id != id); atualizarUI(); } }
+
+        function editar(id) {
+            const t = transacoes.find(x => x.id == id);
+            abrirModal(t.tipo, t.id);
+            document.getElementById('valor').value = t.valor;
+            document.getElementById('descricao').value = t.descricao;
+        }
+
+        function toggleRelatorio() { document.getElementById('aba-detalhes').classList.toggle('hidden'); }
 
         atualizarUI();
     </script>
